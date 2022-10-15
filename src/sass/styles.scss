@@ -1,0 +1,64 @@
+@import './defaulf.scss';
+
+.container {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.header {
+  background: linear-gradient(90deg, #e55d87, #5fc3e4);
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+  font-weight: 700;
+
+  &_text {
+    font-size: 40px;
+    font-weight: 700;
+    color: beige;
+  }
+
+  input {
+    display: block;
+    font: inherit;
+    padding: 8px;
+    width: 320px;
+    /* margin-bottom: 16px; */
+    margin: 16px;
+  }
+}
+
+.gallery_list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+}
+
+.gallery {
+  flex-basis: calc((1200px - 90px) / 4);
+  display: flex;
+  flex-wrap: wrap;
+
+  min-height: 250px;
+}
+
+// .gallery_thumb {
+// }
+
+.gall_desc {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .gall_desc_texxt {
+    font-weight: 700;
+  }
+}
