@@ -46,17 +46,20 @@
   flex-basis: calc((1200px - 90px) / 4);
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
 
-  min-height: 250px;
+  // min-height: 250px;
 }
 
 // .gallery_thumb {
 // }
 
 .gall_desc {
+  text-align: center;
+
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
 
   .gall_desc_texxt {
     font-weight: 700;
