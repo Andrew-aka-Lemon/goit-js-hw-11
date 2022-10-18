@@ -2,15 +2,15 @@ import refs from './js/refs';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import Debounce from 'lodash.debounce';
+import axios from 'axios';
 
 import { refs } from './js/refs';
 
 const DEBOUNCE_DELAY = 300;
-const AUTH_TOKEN = null;
+const AUTH_TOKEN = '30621712-67ba58dcdbb82dbab3da918bc';
 
-const axios = require('axios');
 axios.defaults.baseURL = 'https://pixabay.com';
-axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+const requestAdditionalOptions = '&image_type=photo&orientation=horizontal&safesearch=true';
 
 const testRespObj = {
   total: 4692,
@@ -155,8 +155,16 @@ function onInput(event) {
   }
 }
 
-function searchRequest(itemToFind) {
-  const URL = `/api/?key=${KEY}&q=${itemToFind}&image_type=photo&orientation=horizontal&`;
+async function getImages(itemToFind) {
+  const response = await axios.get(
+    `/api/?key=${AUTH_TOKEN}&q=${itemToFind}&${requestAdditionalOptions}`
+  );
+  if (!response.statusText === 'OK') {
+    throw new Error();
+  }
+  // console.log(response.data);
+
+  return response.data;
 }
 
 function createMarkup(picturesArray) {
@@ -193,3 +201,5 @@ function createMarkup(picturesArray) {
 function makeGallery(markup) {
   refs.galleryBlock.insertAdjacentHTML('afterbegin', markup);
 }
+
+getImages('banana');
