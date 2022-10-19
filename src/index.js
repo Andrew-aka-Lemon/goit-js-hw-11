@@ -1,61 +1,63 @@
-import refs from './js/refs';
+import { refs } from './js/refs';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import Debounce from 'lodash.debounce';
-import axios from 'axios';
 
-import { refs } from './js/refs';
+import { PixabayAPI } from './js/PixabayAPI';
 
 const DEBOUNCE_DELAY = 300;
-const AUTH_TOKEN = '30621712-67ba58dcdbb82dbab3da918bc';
 
-axios.defaults.baseURL = 'https://pixabay.com';
-const requestAdditionalOptions =
-  '&image_type=photo&orientation=horizontal&safesearch=true&per_page=40';
+const pixabay = new PixabayAPI();
 
 refs.input.addEventListener('input', Debounce(onInput, DEBOUNCE_DELAY));
+refs.loadMoreBtn.addEventListener('click', loadMore);
 
 async function onInput(event) {
-  const itemToFind = event.target.value.trim().toLowerCase();
-  console.log(itemToFind);
-  if (!itemToFind) {
-    // clearMarkup();
+  pixabay.itemToFind = event.target.value.trim().toLowerCase();
+  if (!pixabay.itemToFind) {
+    clearPage();
     return;
   }
-  const serverData = await getImages(itemToFind);
-  console.log('🚀 ~ file: index.js ~ line 157 ~ onInput ~ serverData', serverData);
-  if (serverData.totalHits === 0) {
+  pixabay.resetCurrPage();
+
+  const serverData = await pixabay.getImages();
+  if (pixabay.totalItems === 0) {
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
     return;
   }
-  Notiflix.Notify.success(`Hooray! We found ${serverData.totalHits} images !`);
+  Notiflix.Notify.success(`Hooray! We found ${pixabay.totalItems} images !`);
+
   clearPage();
-  createMarkup(serverData);
+
+  insertMarkup(serverData);
+
+  if (pixabay.canLoadMore) {
+    console.log(pixabay.canLoadMore);
+    refs.loadMoreBtn.classList.remove('is-hidden');
+  }
 }
 
 function clearPage() {
   refs.galleryBlock.innerHTML = '';
 }
 
-async function loadMore() {}
+async function loadMore() {
+  refs.loadMoreBtn.classList.add('is-hidden');
 
-async function getImages(itemToFind) {
-  let currPage = 1;
-  const response = await axios.get(
-    `/api/?key=${AUTH_TOKEN}&q=${itemToFind}&${requestAdditionalOptions}&page=${currPage}`
-  );
+  pixabay.increaseCurrPage();
 
-  if (!response.statusText === 'OK') {
-    throw new Error();
+  const serverData = await pixabay.getImages();
+
+  insertMarkup(serverData);
+
+  if (pixabay.canLoadMore) {
+    refs.loadMoreBtn.classList.remove('is-hidden');
   }
-  // console.log(response.data);
-
-  return response.data;
 }
 
-function createMarkup(picturesArray) {
+function insertMarkup(picturesArray) {
   const galleryMarkup = picturesArray.hits
     .map(({ webformatURL, largeImageURL, tags, views, downloads, likes, comments }) => {
       return `<div class="photo-card">

@@ -22,3 +22,9 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.is-hidden {
+  opacity: 1;
+  pointer-events: none;
+  visibility: hidden;
+}
