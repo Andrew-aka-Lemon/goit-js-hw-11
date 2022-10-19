@@ -35,33 +35,40 @@
   }
 }
 
-.gallery_list {
+.gallery {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 30px;
 }
 
-.gallery {
-  flex-basis: calc((1200px - 90px) / 4);
+.photo-card {
+  flex-basis: calc((100% - 90px) / 4);
   display: flex;
   flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: space-between;
 
-  // min-height: 250px;
+  height: 270px;
 }
 
-// .gallery_thumb {
-// }
+.photo-img {
+  width: 100%;
+  height: 85%;
+  // max-width: unset;
+  object-fit: cover;
+}
 
-.gall_desc {
-  text-align: center;
-
+.info {
   display: flex;
   justify-content: space-between;
 
-  .gall_desc_texxt {
-    font-weight: 700;
+  &-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
+}
+
+.load-more {
+  display: block;
+  margin: 10px auto;
 }
