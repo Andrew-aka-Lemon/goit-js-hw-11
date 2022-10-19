@@ -24,6 +24,8 @@ export class PixabayAPI {
 
     this.totalPages = Math.ceil(data.totalHits / 40);
 
+    this.canLoadMore = this.currPage < this.totalPages;
+
     return data;
   }
 

@@ -1,6 +1,7 @@
 import { refs } from './js/refs';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import Debounce from 'lodash.debounce';
 
 import { PixabayAPI } from './js/PixabayAPI';
@@ -8,6 +9,7 @@ import { PixabayAPI } from './js/PixabayAPI';
 const DEBOUNCE_DELAY = 300;
 
 const pixabay = new PixabayAPI();
+const lightbox = new SimpleLightbox('.gallery a');
 
 refs.input.addEventListener('input', Debounce(onInput, DEBOUNCE_DELAY));
 refs.loadMoreBtn.addEventListener('click', loadMore);
@@ -33,6 +35,8 @@ async function onInput(event) {
 
   insertMarkup(serverData);
 
+  lightbox.refresh();
+
   if (pixabay.canLoadMore) {
     console.log(pixabay.canLoadMore);
     refs.loadMoreBtn.classList.remove('is-hidden');
@@ -52,6 +56,8 @@ async function loadMore() {
 
   insertMarkup(serverData);
 
+  lightbox.refresh();
+
   if (pixabay.canLoadMore) {
     refs.loadMoreBtn.classList.remove('is-hidden');
   }
@@ -61,7 +67,7 @@ function insertMarkup(picturesArray) {
   const galleryMarkup = picturesArray.hits
     .map(({ webformatURL, largeImageURL, tags, views, downloads, likes, comments }) => {
       return `<div class="photo-card">
-                <img src="${webformatURL}" alt="${tags}" class="photo-img" loading="lazy" />
+                <a href="${largeImageURL}"><img src="${webformatURL}" alt="${tags}" class="photo-img" loading="lazy" /></a>
                 <div class="info">
                   <p class="info-item">
                     <b>Likes</b>${likes}
