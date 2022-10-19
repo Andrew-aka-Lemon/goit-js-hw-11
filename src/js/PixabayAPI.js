@@ -36,6 +36,4 @@ export class PixabayAPI {
   resetCurrPage() {
     this.currPage = 1;
   }
-
-  canLoadMore = !(this.currPage < this.totalPages);
 }
