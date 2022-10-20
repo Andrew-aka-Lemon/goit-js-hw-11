@@ -21,6 +21,7 @@ async function onInput(event) {
     return;
   }
   pixabay.resetCurrPage();
+  refs.loadMoreBtn.classList.add('is-hidden');
 
   const serverData = await pixabay.getImages();
   if (pixabay.totalItems === 0) {
@@ -38,9 +39,19 @@ async function onInput(event) {
   lightbox.refresh();
 
   if (pixabay.canLoadMore) {
-    console.log(pixabay.canLoadMore);
     refs.loadMoreBtn.classList.remove('is-hidden');
   }
+
+  scroll();
+}
+
+function scroll() {
+  const headerHeight = refs.forScrollElem.scrollHeight;
+
+  window.scrollBy({
+    top: headerHeight,
+    behavior: 'smooth',
+  });
 }
 
 function clearPage() {
